@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .chrome-temp/
+.chrome-*/
 
 *.tsbuildinfo
 vite.config.js
