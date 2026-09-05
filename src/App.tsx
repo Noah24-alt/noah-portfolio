@@ -46,7 +46,7 @@ const projects: Project[] = [
     impact: 'Reduced transaction drop-off, clearer fee breakdowns, and a trustworthy payment flow for everyday crypto transactions.',
     accent: '#030b14',
     mark: 'P',
-    logo: '/paywithcrypto.png?v=2',
+    logo: '/paywithcrypto.png?v=4',
     logoFull: true,
   },
   {
@@ -59,49 +59,55 @@ const projects: Project[] = [
     problem: 'Important signals were buried inside dense dashboards designed around data structures instead of user decisions.',
     solution: 'I reframed the experience around questions, alerts, and actionable summaries while preserving access to deeper analysis.',
     impact: 'Faster scanning, clearer priorities, and a product that better supported day-to-day decision making.',
-    accent: '#0b0c0f',
+    accent: '#0066ff',
     mark: 'A',
-    logo: '/alixpay.png?v=3',
+    logo: '/alixpay.png?v=4',
     logoFull: true,
   },
   {
-    id: 'relay',
-    title: 'relay mobile',
+    id: 'meyfi',
+    title: 'MeyFi',
     description: 'a mobile service experience designed around trust',
-    tags: ['mobile', 'service', 'research'],
+    tags: ['RWA', 'Staking'],
     year: '2025',
     role: 'ux / ui designer',
     problem: 'Users did not know what would happen after submitting a request, creating anxiety and repeat support contacts.',
     solution: 'I redesigned the end-to-end status model, notifications, and service timeline to make progress visible at every stage.',
     impact: 'A more transparent journey with clearer expectations and fewer ambiguous states.',
-    accent: '#56C8FF',
-    mark: 'R',
+    accent: '#0b0c0f',
+    mark: 'M',
+    logo: '/meyfi.png?v=2',
+    logoFull: true,
   },
   {
-    id: 'kinetic',
-    title: 'kinetic ai',
+    id: 'herbviet',
+    title: 'HerbViet',
     description: 'human-centered workflows for an ai-assisted product',
-    tags: ['ai', 'interaction', 'prototype'],
+    tags: ['Healthy', 'App'],
     year: '2025',
     role: 'product designer',
     problem: 'The first concept exposed too much system complexity and made users responsible for writing perfect prompts.',
     solution: 'I designed guided starting points, editable assumptions, and visible reasoning checkpoints to keep users in control.',
     impact: 'A more approachable workflow that focused on outcomes rather than prompt engineering.',
-    accent: '#FF9DD4',
-    mark: 'K',
+    accent: '#0b0c0f',
+    mark: 'H',
+    logo: '/herbviet.png?v=2',
+    logoFull: true,
   },
   {
-    id: 'foundation',
-    title: 'foundation',
+    id: 'aptossocialfi',
+    title: 'AptosSocialFi',
     description: 'a design system built for scaling product teams',
-    tags: ['design system', 'ui', 'scale'],
+    tags: ['Quest', 'Newsfeed', 'UX'],
     year: '2024',
     role: 'product designer',
     problem: 'Product surfaces had drifted apart as teams shipped quickly with inconsistent components and patterns.',
     solution: 'I audited the interface, defined foundations and reusable components, and documented contribution rules for the team.',
     impact: 'More consistent product quality and a faster path from design decisions to implementation.',
-    accent: '#65E3AA',
-    mark: 'D',
+    accent: '#e6f723',
+    mark: 'A',
+    logo: '/aptossocialfi.png?v=2',
+    logoFull: true,
   },
 ]
 
@@ -251,59 +257,17 @@ function ProjectPanel({ project }: { project: Project }) {
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="project-bento-grid">
-        {/* Tile 1: Hero (Title & Lead) */}
-        <div className="bento-tile bento-hero">
-          <div className="bento-eyebrow">
-            <span>selected work / {project.year}</span>
-          </div>
-          <h1 className="bento-title">{project.title}</h1>
-          <p className="bento-lead">{project.description}</p>
+      <header className="project-editorial-card">
+        <div className="editorial-col-title">
+          <h1 className="editorial-title">{project.title}</h1>
         </div>
 
-        {/* Tile 2: Visual Identity / Logo */}
-        <div className="bento-tile bento-visual">
-          <div
-            className="bento-visual-inner"
-            style={{
-              background: project.logoFull
-                ? 'transparent'
-                : project.logo
-                ? '#ffffff'
-                : project.accent,
-              border: project.logo && !project.logoFull ? '1px solid #e8e8e8' : 'none',
-            }}
-          >
-            {project.logo ? (
-              <img
-                src={project.logo}
-                alt={project.title}
-                className={`bento-logo-img ${project.logoFull ? 'is-full' : ''}`}
-              />
-            ) : (
-              <span className="bento-mark" style={{ color: '#fff' }}>
-                {project.mark}
-              </span>
-            )}
-          </div>
+        <div className="editorial-col-desc">
+          <p className="editorial-description">{project.description}</p>
         </div>
 
-        {/* Tile 3: Role */}
-        <div className="bento-tile bento-meta">
-          <span className="bento-label">role</span>
-          <strong className="bento-value">{project.role}</strong>
-        </div>
-
-        {/* Tile 4: Year */}
-        <div className="bento-tile bento-meta">
-          <span className="bento-label">year</span>
-          <strong className="bento-value">{project.year}</strong>
-        </div>
-
-        {/* Tile 5: Scope */}
-        <div className="bento-tile bento-scope">
-          <span className="bento-label">scope</span>
-          <div className="bento-tags">
+        <div className="editorial-col-tags">
+          <div className="editorial-tags">
             {project.tags.map((tag) => (
               <span key={tag} className="bento-tag">
                 <span className="bento-hash">#</span>
@@ -312,7 +276,7 @@ function ProjectPanel({ project }: { project: Project }) {
             ))}
           </div>
         </div>
-      </div>
+      </header>
 
       {project.image && (
         <div className="project-illustration">
