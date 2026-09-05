@@ -50,17 +50,19 @@ const projects: Project[] = [
     logoFull: true,
   },
   {
-    id: 'northstar',
-    title: 'northstar',
+    id: 'alixpay',
+    title: 'Alix Pay',
     description: 'decision support for people working with complex data',
-    tags: ['data', 'dashboard', 'ux'],
+    tags: ['Scan QR', 'Payment'],
     year: '2025',
     role: 'product designer',
     problem: 'Important signals were buried inside dense dashboards designed around data structures instead of user decisions.',
     solution: 'I reframed the experience around questions, alerts, and actionable summaries while preserving access to deeper analysis.',
     impact: 'Faster scanning, clearer priorities, and a product that better supported day-to-day decision making.',
-    accent: '#FF7C55',
-    mark: 'N',
+    accent: '#0b0c0f',
+    mark: 'A',
+    logo: '/alixpay.png?v=3',
+    logoFull: true,
   },
   {
     id: 'relay',
@@ -106,7 +108,9 @@ const projects: Project[] = [
 function BrandCard({ onHome }: { onHome: () => void }) {
   return (
     <button className="brand-card" onClick={onHome} aria-label="Show Noah introduction">
-      <span className="brand-mark"><i /></span>
+      <span className="brand-mark">
+        <img src="/avatar.png?v=2" alt="Noah design" className="brand-logo-img" />
+      </span>
       <span className="brand-name">noah design</span>
       <span className="brand-copy">i design digital products that make complex things feel clear, useful and memorable.</span>
     </button>
