@@ -190,7 +190,7 @@ function IntroPanel({ onGoWork }: { onGoWork?: () => void }) {
 
       <div className="intro-content-inner">
         <h1>
-          Designing simple,<br className="intro-title-br" />useful experiences.
+          Designing simple, <br className="intro-title-br" />useful experiences.
         </h1>
         <div className="intro-copy">
           <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience.</p>
@@ -272,6 +272,7 @@ function App() {
     setMobileTab('intro')
     railRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     detailRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const handleSelectProject = (id: string) => {
@@ -287,6 +288,7 @@ function App() {
     } else {
       setMobileTab('intro')
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
