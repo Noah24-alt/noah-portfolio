@@ -113,11 +113,11 @@ const projects: Project[] = [
 
 function BrandCard({ onHome }: { onHome: () => void }) {
   return (
-    <button className="brand-card" onClick={onHome} aria-label="Show Noah introduction">
+    <button className="brand-card" onClick={onHome} aria-label="Show About me">
       <span className="brand-mark">
-        <img src="/avatar.png?v=2" alt="Noah design" className="brand-logo-img" />
+        <img src="/avatar.png?v=2" alt="About me" className="brand-logo-img" />
       </span>
-      <span className="brand-name">noah design</span>
+      <span className="brand-name">About me</span>
       <span className="brand-copy">i design digital products that make complex things feel clear, useful and memorable.</span>
     </button>
   )
@@ -183,58 +183,22 @@ function IntroPanel({ onGoWork }: { onGoWork?: () => void }) {
           playsInline
           preload="auto"
         >
-          <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788536691/bg_test.mp4" type="video/mp4" />
           <source src="/bg_test.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788536691/bg_test.mp4" type="video/mp4" />
         </video>
       </div>
 
       <div className="intro-content-inner">
-        <h1>designing useful<br />digital products</h1>
+        <h1>
+          Designing simple,<br className="intro-title-br" />useful experiences.
+        </h1>
         <div className="intro-copy">
-          <p>i work across product strategy, ux and interface design to turn ambiguous problems into focused digital experiences.</p>
-          <p>my approach connects user needs, business context and thoughtful visual systems — from the first question to the final interaction.</p>
+          <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience.</p>
+          <p>I enjoy turning ideas into simple, thoughtful digital experiences.</p>
         </div>
         <div className="contact-block">
-          <a href="mailto:hello@noah.design">hello@noah.design</a>
-          <span>— tell me what you are building</span>
-        </div>
-        <div className="socials-block">
-          <span className="socials-label">Connect on socials</span>
-          <div className="socials-links">
-            <a
-              href="https://www.behance.net"
-              target="_blank"
-              rel="noreferrer"
-              className="social-btn"
-              aria-label="Behance"
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                <path d="M7.799 13.901c.421 0 .782-.047 1.082-.142.3-.095.545-.23.734-.406.19-.175.326-.388.41-.639.085-.252.127-.534.127-.847 0-.399-.074-.73-.223-.993a1.95 1.95 0 0 0-.58-.667c-.237-.168-.507-.291-.809-.37-.302-.078-.619-.117-.951-.117H4.514v4.181h3.285zm-.316-5.467c.307 0 .584-.04.832-.121.248-.08.455-.195.62-.345.166-.15.29-.331.373-.545.083-.214.125-.456.125-.726 0-.555-.166-.975-.499-1.26-.332-.284-.79-.427-1.374-.427H4.514v3.424h2.969zM8.01 2H2v20h6.666c1.077 0 2.016-.145 2.817-.435.8-.29 1.455-.705 1.965-1.246.51-.54.885-1.196 1.126-1.968.24-.772.361-1.638.361-2.597 0-.91-.122-1.706-.367-2.387a5.534 5.534 0 0 0-1.042-1.802 5.093 5.093 0 0 0-1.62-1.22c-.642-.298-1.385-.498-2.228-.6.549-.133 1.036-.339 1.46-.618.425-.28.777-.624 1.056-1.033.28-.409.489-.876.627-1.4.138-.524.208-1.096.208-1.716 0-.825-.125-1.572-.375-2.242a5.418 5.418 0 0 0-1.085-1.77 5.764 5.764 0 0 0-1.715-1.189C9.972 2.146 9.062 2 8.01 2zm8.799 6.223h5.795v1.654H16.81V8.223zm3.178 3.518c-.896 0-1.673.153-2.332.46-.659.306-1.206.73-1.64 1.272-.435.542-.756 1.183-.965 1.924-.208.74-.313 1.545-.313 2.414 0 .914.108 1.745.323 2.493.216.748.54 1.385.974 1.91.433.525.977.925 1.63 1.2.653.276 1.41.414 2.27.414.939 0 1.761-.157 2.466-.47.705-.314 1.282-.767 1.73-1.36l-1.92-1.396c-.307.391-.659.68-1.056.867-.397.186-.856.28-1.377.28-.68 0-1.237-.167-1.67-.5-.434-.333-.71-.818-.83-1.455h7.108c.045-.285.068-.587.068-.906 0-.853-.105-1.644-.316-2.373a5.044 5.044 0 0 0-.934-1.892 4.67 4.67 0 0 0-1.564-1.246c-.633-.284-1.388-.426-2.266-.426zm-2.036 4.316c.097-.565.347-1.01.75-1.336.404-.325.932-.488 1.586-.488.608 0 1.104.156 1.488.468.384.312.628.749.732 1.312l-4.556.044z" />
-              </svg>
-            </a>
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noreferrer"
-              className="social-btn"
-              aria-label="Facebook"
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-              </svg>
-            </a>
-            <a
-              href="https://dribbble.com"
-              target="_blank"
-              rel="noreferrer"
-              className="social-btn"
-              aria-label="Dribbble"
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                <path fillRule="evenodd" clipRule="evenodd" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm9.849 11.233c-.29-.028-2.613-.244-5.244.595-.145-.333-.298-.673-.459-1.02-.387-.83-.82-1.684-1.3-2.529 2.91-1.22 4.095-2.82 4.175-2.932 1.71 1.624 2.784 3.87 2.828 6.366v-.48zm-4.708-7.554c-.113.14-1.272 1.545-4.084 2.666-1.516-2.775-3.15-5.11-3.298-5.32 1.3-.435 2.7-.675 4.15-.675 1.18 0 2.31.164 3.232.47zm-9.014-2.12c.16.224 1.77 2.524 3.284 5.275-3.87 1.112-7.534.985-7.854.97A9.878 9.878 0 0 1 8.127 1.56zM2.15 12.001c0-.056 0-.112.002-.168.324.01 4.542.138 8.783-1.127.172.36.335.717.487 1.07-.37.106-.75.228-1.138.363-4.382 1.523-6.626 5.253-6.734 5.437A9.88 9.88 0 0 1 2.15 12zm3.328 6.945c.148-.224 2.115-3.486 6.368-5.014.283-.102.56-.192.831-.274.773 2.163 1.157 4.343 1.258 4.962a9.92 9.92 0 0 1-8.457.326zm10.228-.967c-.126-.643-.526-2.74-1.298-4.836 2.39-.77 4.52-.58 4.807-.552a9.914 9.914 0 0 1-3.509 5.388z" />
-              </svg>
-            </a>
-          </div>
+          <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
+          <a href="mailto:tuannvfpt18@gmail.com" className="contact-email">tuannvfpt18@gmail.com</a>
         </div>
         {onGoWork && (
           <div className="mobile-work-cta-wrap">
@@ -301,7 +265,7 @@ function App() {
   const year = new Date().getFullYear()
 
   const railRef = useRef<HTMLDivElement>(null)
-  const detailRef = useRef<HTMLElement>(null)
+  const detailRef = useRef<HTMLDivElement>(null)
 
   const handleHome = () => {
     setSelectedId(null)
@@ -347,7 +311,7 @@ function App() {
           </>
         ) : (
           <>
-            <span className="mobile-header-brand">noah design</span>
+            <span className="mobile-header-brand">About me</span>
             <div className="mobile-header-spacer" />
             <button className="mobile-nav-pill" onClick={() => setMobileTab('work')} aria-label="View work">
               Work ({projects.length}) →
@@ -383,26 +347,40 @@ function App() {
         </aside>
 
         <section
-          ref={detailRef}
           className={`details detail-panel ${!selectedProject && mobileTab === 'work' ? 'mobile-hidden' : ''}`}
           aria-live="polite"
         >
-          <AnimatePresence mode="wait">
-            {selectedProject ? (
-              <ProjectPanel
-                key={selectedProject.id}
-                project={selectedProject}
-              />
-            ) : (
-              <IntroPanel key="intro" onGoWork={() => setMobileTab('work')} />
+          <div ref={detailRef} className="details-scroll">
+            <AnimatePresence mode="wait">
+              {selectedProject ? (
+                <ProjectPanel
+                  key={selectedProject.id}
+                  project={selectedProject}
+                />
+              ) : (
+                <IntroPanel key="intro" onGoWork={() => setMobileTab('work')} />
+              )}
+            </AnimatePresence>
+          </div>
+
+          <AnimatePresence>
+            {!selectedProject && (
+              <motion.footer
+                key="site-footer"
+                className="site-footer"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="footer-status">
+                  <span className="status-dot" aria-hidden="true" />
+                  Open for work
+                </span>
+                <span>© Tuan Nguyen {year}</span>
+              </motion.footer>
             )}
           </AnimatePresence>
-
-          <footer className="site-footer">
-            <span>◉ Ho Chi Minh City</span>
-            <a href="mailto:hello@noah.design">↗ hello@noah.design</a>
-            <span>© noah {year} — product design with clarity</span>
-          </footer>
         </section>
       </section>
     </main>
