@@ -289,7 +289,7 @@ function IntroPanel({
 
       <div className="intro-content-inner">
         <h1>
-          <MaskedLine delay={0} yOffset={24} duration={0.8}>Designing simple,</MaskedLine>
+          <MaskedLine delay={0} yOffset={24} duration={0.8}>Designing <span className="heading-highlight" style={{ color: '#485CE3', fontStyle: 'italic', fontFamily: "'Caveat', cursive" }}>simple</span></MaskedLine>
           <MaskedLine delay={0.08} yOffset={24} duration={0.8}>useful experiences.</MaskedLine>
         </h1>
         <FadeUpReveal delay={0.2} yOffset={16} duration={0.6} className="intro-copy">
