@@ -3,9 +3,12 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { FadeUpReveal, HighlightedWord, MaskedLine, PAGE_EXIT_TRANSITION, ScrollReveal } from './components/TextReveal'
 import { StickerPlayground } from './components/StickerPlayground'
 import { getImageDimensions, getOptimizedImageUrl, getResponsiveSrcSet, PROJECT_IMAGE_SIZES } from './utils/image'
+import { usePortfolioRouter } from './router'
 
 type Project = {
   id: string
+  slug: string
+  aliases?: string[]
   title: string
   description: string
   tags: string[]
@@ -28,6 +31,7 @@ type Project = {
 const projects: Project[] = [
   {
     id: 'alphy',
+    slug: 'alphy',
     title: 'Alphy',
     description: 'Connecting social insights with crypto trading.',
     tags: ['Trading', 'Perp', 'AI Signal'],
@@ -49,6 +53,8 @@ const projects: Project[] = [
   },
   {
     id: 'paywithcrypto',
+    slug: 'pay-with-crypto',
+    aliases: ['paywithcrypto'],
     title: 'PaywithCrypto',
     description: 'Bringing crypto into everyday payments.',
     tags: ['Wallet', 'Payment'],
@@ -71,6 +77,8 @@ const projects: Project[] = [
   },
   {
     id: 'alixpay',
+    slug: 'alix-pay',
+    aliases: ['alixpay'],
     title: 'Alix Pay',
     description: 'Seamless crypto payments anytime, anywhere.',
     tags: ['Scan QR', 'Payment'],
@@ -93,6 +101,8 @@ const projects: Project[] = [
   },
   {
     id: 'meyfi',
+    slug: 'mey-fi',
+    aliases: ['meyfi'],
     title: 'MeyFi',
     description: 'a mobile service experience designed around trust',
     tags: ['RWA', 'Staking'],
@@ -111,6 +121,8 @@ const projects: Project[] = [
   },
   {
     id: 'herbviet',
+    slug: 'herb-viet',
+    aliases: ['herbviet'],
     title: 'HerbViet',
     description: 'human-centered workflows for an ai-assisted product',
     tags: ['Healthy', 'App'],
@@ -129,6 +141,8 @@ const projects: Project[] = [
   },
   {
     id: 'aptossocialfi',
+    slug: 'aptos-social-fi',
+    aliases: ['aptossocialfi'],
     title: 'AptosSocialFi',
     description: 'a design system built for scaling product teams',
     tags: ['Quest', 'Newsfeed', 'UX'],
@@ -146,6 +160,11 @@ const projects: Project[] = [
     logoFull: true,
   },
 ]
+
+function findProjectBySlug(slug: string): Project | undefined {
+  const s = slug.toLowerCase()
+  return projects.find((p) => p.slug === s || p.id === s || p.aliases?.includes(s))
+}
 
 function BrandCard({ onHome }: { onHome: () => void }) {
   return (
@@ -453,41 +472,78 @@ function ProjectPanel({ project }: { project: Project }) {
 }
 
 function App() {
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [mobileTab, setMobileTab] = useState<'work' | 'intro'>('intro')
+  const router = usePortfolioRouter()
   const visibleProjects = useMemo(
     () => projects.filter((project) => !project.hidden),
     [],
   )
-  const selectedProject = useMemo(
-    () => projects.find((project) => project.id === selectedId) ?? null,
-    [selectedId],
-  )
+
+  const selectedProject = useMemo(() => {
+    if (router.route.type === 'project' && router.route.slug) {
+      return findProjectBySlug(router.route.slug) ?? null
+    }
+    return null
+  }, [router.route])
+
+  // Gracefully fallback to /work if invalid project slug is visited
+  useEffect(() => {
+    if (router.route.type === 'project' && router.route.slug && !selectedProject) {
+      router.navigate('/work', { replace: true })
+    }
+  }, [router.route, selectedProject, router])
+
+  const isMobileWork = router.route.type === 'work'
+  const mobileTab: 'work' | 'intro' = isMobileWork || selectedProject ? 'work' : 'intro'
   const year = new Date().getFullYear()
 
   const railRef = useRef<HTMLDivElement>(null)
   const detailRef = useRef<HTMLDivElement>(null)
 
+  // Scroll restoration: restore saved scroll position upon returning to work list / home
+  useEffect(() => {
+    if (!selectedProject) {
+      const saved = router.getSavedScroll()
+      if (saved.railScroll !== undefined && railRef.current) {
+        railRef.current.scrollTop = saved.railScroll
+      }
+      if (saved.windowScroll !== undefined) {
+        window.scrollTo({ top: saved.windowScroll, behavior: 'auto' })
+      }
+    }
+  }, [selectedProject, router])
+
   const handleHome = () => {
-    setSelectedId(null)
-    setMobileTab('intro')
+    router.navigate('/', {
+      railScroll: railRef.current?.scrollTop,
+      windowScroll: window.scrollY,
+    })
     railRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     detailRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const handleSelectProject = (id: string) => {
-    setSelectedId(id)
+  const handleSelectProject = (project: Project) => {
+    router.navigate(`/work/${project.slug}`, {
+      railScroll: railRef.current?.scrollTop,
+      windowScroll: window.scrollY,
+    })
     detailRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleGoWork = () => {
+    router.navigate('/work', {
+      railScroll: railRef.current?.scrollTop,
+      windowScroll: window.scrollY,
+    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const handleBack = () => {
-    if (selectedId) {
-      setSelectedId(null)
-      setMobileTab('work')
-    } else {
-      setMobileTab('intro')
+    if (selectedProject) {
+      router.goBack('/work')
+    } else if (mobileTab === 'work') {
+      router.goBack('/')
     }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -509,7 +565,7 @@ function App() {
           </>
         ) : mobileTab === 'work' ? (
           <>
-            <button className="mobile-back-btn" onClick={() => setMobileTab('intro')} aria-label="Back to intro">
+            <button className="mobile-back-btn" onClick={handleBack} aria-label="Back to intro">
               ← back
             </button>
             <h2 className="mobile-header-title">Work</h2>
@@ -550,8 +606,8 @@ function App() {
               <FadeUpReveal key={project.id} delay={0.1 + idx * 0.04} yOffset={8}>
                 <WorkCard
                   project={project}
-                  active={selectedId === project.id}
-                  onClick={() => handleSelectProject(project.id)}
+                  active={selectedProject?.id === project.id}
+                  onClick={() => handleSelectProject(project)}
                 />
               </FadeUpReveal>
             ))}
@@ -572,7 +628,7 @@ function App() {
               ) : (
                 <IntroPanel
                   key="intro"
-                  onGoWork={() => setMobileTab('work')}
+                  onGoWork={handleGoWork}
                   workCount={visibleProjects.length}
                   projectsList={visibleProjects}
                 />
@@ -605,3 +661,4 @@ function App() {
 }
 
 export default App
+
