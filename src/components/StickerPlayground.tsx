@@ -92,16 +92,42 @@ export function StickerPlayground({ children, className = '' }: StickerPlaygroun
 
       <AnimatePresence>
         {!hasInteracted && (
-          <motion.span
-            className="sticker-hint-badge"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-            transition={{ delay: 0.6, duration: 0.4 }}
+          <motion.div
+            className="sticker-hint-container"
+            initial={{ opacity: 0, y: 8, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.92, transition: { duration: 0.25, ease: 'easeOut' } }}
+            transition={{ delay: 0.35, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="hint-desktop">click around :)</span>
-            <span className="hint-mobile">tap around :)</span>
-          </motion.span>
+            <div className="sticker-hint-pill">
+              <span className="sticker-hint-sparkle" aria-hidden="true">✨</span>
+              <span className="hint-desktop">Click around :)</span>
+              <span className="hint-mobile">Tap around :)</span>
+            </div>
+            <div className="sticker-hint-arrow-wrap" aria-hidden="true">
+              <svg
+                className="sticker-hint-arrow-svg"
+                viewBox="0 0 44 42"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M34 2 C32 16 20 30 6 32"
+                  stroke="currentColor"
+                  strokeWidth="1.65"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M17 24 L5 32 L15 39"
+                  stroke="currentColor"
+                  strokeWidth="1.65"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 

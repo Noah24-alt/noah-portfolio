@@ -266,7 +266,7 @@ function IntroPanel({
           <MaskedLine delay={0.08} yOffset={24} duration={0.8}>useful experiences.</MaskedLine>
         </h1>
         <FadeUpReveal delay={0.2} yOffset={16} duration={0.6} className="intro-copy">
-          <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience. I enjoy turning ideas into simple, thoughtful digital experiences.</p>
+          <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience. I enjoy turning complex ideas into simple, useful digital experiences.</p>
         </FadeUpReveal>
         <FadeUpReveal delay={0.28} yOffset={16} duration={0.6} className="contact-block">
           <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
