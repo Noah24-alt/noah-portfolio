@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { FadeUpReveal, HighlightedWord, MaskedLine, PAGE_EXIT_TRANSITION, ScrollReveal } from './components/TextReveal'
+import { StickerPlayground } from './components/StickerPlayground'
 import { getImageDimensions, getOptimizedImageUrl, getResponsiveSrcSet, PROJECT_IMAGE_SIZES } from './utils/image'
 
 type Project = {
@@ -237,7 +238,7 @@ function IntroPanel({
       exit={{ opacity: 0 }}
       transition={PAGE_EXIT_TRANSITION}
     >
-      <div className="intro-bg-video-wrapper" aria-hidden="true">
+      <StickerPlayground>
         <div
           className={`intro-skeleton skeleton-shimmer ${videoLoaded ? 'is-hidden' : ''}`}
           aria-hidden="true"
@@ -250,15 +251,14 @@ function IntroPanel({
           muted
           playsInline
           preload="auto"
-          poster="https://res.cloudinary.com/jzcct3wg/video/upload/so_0,f_auto,q_80,w_1200/v1788536691/bg_test.jpg"
+          poster="https://res.cloudinary.com/jzcct3wg/video/upload/so_0,f_auto,q_80,w_1200/v1788859893/Mascot_working_at_desk_1080p_202609081630.jpg"
           onLoadedData={() => setVideoLoaded(true)}
           onPlaying={() => setVideoLoaded(true)}
           onCanPlay={() => setVideoLoaded(true)}
         >
-          <source src="/bg_test.mp4" type="video/mp4" />
-          <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788536691/bg_test.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788859893/Mascot_working_at_desk_1080p_202609081630.mp4" type="video/mp4" />
         </video>
-      </div>
+      </StickerPlayground>
 
       <div className="intro-content-inner">
         <h1>
