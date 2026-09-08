@@ -256,8 +256,7 @@ function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?
           Designing simple, <br className="intro-title-br" />useful experiences.
         </h1>
         <div className="intro-copy">
-          <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience.</p>
-          <p>I enjoy turning ideas into simple, thoughtful digital experiences.</p>
+          <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience. I enjoy turning ideas into simple, thoughtful digital experiences.</p>
         </div>
         <div className="contact-block">
           <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
