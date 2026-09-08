@@ -862,8 +862,7 @@ a { color: inherit; text-decoration: none; }
   body {
     height: auto;
     min-height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: visible;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -895,59 +894,86 @@ a { color: inherit; text-decoration: none; }
     gap: 0;
   }
 
-  /* Mobile Top Navigation Header matching reference */
+  /* Mobile Floating Rounded Header (Glass Capsule Style) */
   .mobile-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 52px;
+    margin: 14px 16px 0;
     padding: 0 16px;
-    background: #ffffff;
-    border-bottom: 1px solid #f0f0f0;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(225, 225, 225, 0.7);
+    border-radius: 22px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    box-sizing: border-box;
     position: sticky;
-    top: 0;
+    top: 14px;
     z-index: 50;
+  }
+
+  .mobile-header.mobile-header-home {
+    padding-left: 16px;
+    padding-right: 8px;
   }
 
   .mobile-back-btn {
     border: 0;
     background: none;
-    padding: 8px 4px;
-    color: #111;
+    padding: 0;
+    color: #111111;
+    font-family: inherit;
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 4px;
-    min-width: 68px;
-    letter-spacing: -.02em;
+    width: 64px;
+    min-width: 64px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-back-btn:hover {
+    opacity: 0.7;
   }
 
   .mobile-header-title {
     margin: 0;
-    font-size: 17px;
+    font-family: inherit;
+    font-size: 19px;
     font-weight: 600;
-    color: #111;
-    letter-spacing: -.03em;
+    color: #111111;
+    letter-spacing: -0.03em;
     text-align: center;
     flex: 1;
+    line-height: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .mobile-header-spacer {
-    min-width: 68px;
+    width: 64px;
+    min-width: 64px;
     display: flex;
     justify-content: flex-end;
+    pointer-events: none;
   }
 
   .mobile-header-brand {
-    font-size: 17px;
+    font-family: inherit;
+    font-size: 18px;
     font-weight: 600;
-    color: #111;
-    letter-spacing: -.03em;
+    color: #111111;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    display: flex;
+    align-items: center;
   }
 
   .mobile-nav-pill {
@@ -963,20 +989,24 @@ a { color: inherit; text-decoration: none; }
   }
 
   .mobile-header-resume {
+    height: 36px;
+    padding: 0 16px;
+    min-width: unset;
     border: 1px solid #111111;
     background: #111111;
     color: #ffffff;
-    font-size: 13px;
+    font-family: inherit;
+    font-size: 13.5px;
     font-weight: 500;
-    padding: 6px 14px;
     border-radius: 999px;
     cursor: pointer;
-    letter-spacing: -.02em;
+    letter-spacing: -0.02em;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    line-height: 1.2;
+    line-height: 1;
+    box-sizing: border-box;
     transition: transform 0.2s ease, background-color 0.2s ease;
   }
 
@@ -989,11 +1019,11 @@ a { color: inherit; text-decoration: none; }
     transform: scale(0.98);
   }
 
-  /* Work List on Mobile (matches reference image) */
+  /* Work List on Mobile */
   .sidebar,
   .work-rail {
     height: auto;
-    padding: 0;
+    padding: 20px 16px 0;
     gap: 0;
     overflow: visible;
     width: 100%;
@@ -1016,7 +1046,7 @@ a { color: inherit; text-decoration: none; }
     flex-direction: column;
     gap: 12px;
     width: 100%;
-    padding: 16px 16px 28px 16px;
+    padding: 0 0 28px 0;
     box-sizing: border-box;
   }
 
@@ -1098,7 +1128,11 @@ a { color: inherit; text-decoration: none; }
   .details-scroll {
     height: auto;
     overflow: visible;
-    padding: 24px 16px 0;
+    padding: 20px 16px 0;
+  }
+
+  .intro-panel {
+    padding-top: 4px;
   }
 
   .detail-content {
@@ -1162,26 +1196,132 @@ a { color: inherit; text-decoration: none; }
     gap: 10px;
   }
 
+  /* Mobile Ooze-inspired Work Card CTA */
   .mobile-work-cta-wrap {
     display: block;
     margin-top: 28px;
+    width: 100%;
   }
 
-  .mobile-work-cta {
+  .mobile-work-card-cta {
     width: 100%;
-    padding: 16px;
-    border-radius: 18px;
-    background: #111;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 500;
-    border: 0;
-    cursor: pointer;
-    letter-spacing: -.02em;
+    height: 85px;
+    min-height: 85px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: #f8f8fa;
+    border: 1px solid #eaeaec;
+    border-radius: 24px;
+    cursor: pointer;
+    text-align: left;
+    box-sizing: border-box;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.22s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-work-card-cta:hover {
+    background: #f1f1f4;
+    border-color: #dddddf;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-work-card-cta:active {
+    transform: scale(0.985);
+    background: #ebebee;
+  }
+
+  .mobile-cta-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-cta-label {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 500;
+    color: #111111;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    text-transform: lowercase;
+  }
+
+  .mobile-cta-cluster {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 48px;
+    padding-right: 6px;
+    flex-shrink: 0;
+  }
+
+  .mobile-cta-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09), 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-cta-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mobile-cta-thumb-img:not(.is-full) {
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
+  }
+
+  .mobile-cta-thumb.thumb-0 {
+    transform: rotate(-9deg);
+    z-index: 1;
+    margin-right: -15px;
+  }
+
+  .mobile-cta-thumb.thumb-1 {
+    transform: rotate(2deg) translateY(-2px);
+    z-index: 2;
+    margin-right: -15px;
+  }
+
+  .mobile-cta-thumb.thumb-2 {
+    transform: rotate(11deg);
+    z-index: 3;
+  }
+
+  .mobile-work-card-cta:hover .mobile-cta-thumb.thumb-0 {
+    transform: rotate(-14deg) scale(1.03);
+  }
+
+  .mobile-work-card-cta:hover .mobile-cta-thumb.thumb-1 {
+    transform: rotate(0deg) translateY(-4px) scale(1.06);
+  }
+
+  .mobile-work-card-cta:hover .mobile-cta-thumb.thumb-2 {
+    transform: rotate(15deg) scale(1.03);
+  }
+
+  .mobile-cta-thumb-fallback {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111111;
   }
 
   .intro-panel {
@@ -1198,7 +1338,7 @@ a { color: inherit; text-decoration: none; }
     max-width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
-    margin: 4px 0 20px 0;
+    margin: 0 0 20px 0;
     border-radius: 0;
     overflow: hidden;
     display: flex;

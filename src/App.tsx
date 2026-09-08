@@ -206,7 +206,15 @@ function WorkCard({ project, active, onClick }: { project: Project; active: bool
   )
 }
 
-function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?: number }) {
+function IntroPanel({
+  onGoWork,
+  workCount,
+  projectsList,
+}: {
+  onGoWork?: () => void
+  workCount?: number
+  projectsList?: Project[]
+}) {
   const [videoLoaded, setVideoLoaded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -272,8 +280,36 @@ function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?
         </a>
         {onGoWork && (
           <div className="mobile-work-cta-wrap">
-            <button className="mobile-work-cta" onClick={onGoWork}>
-              View Selected Work ({workCount ?? 3}) →
+            <button
+              type="button"
+              className="mobile-work-card-cta"
+              onClick={onGoWork}
+              aria-label="View selected work"
+            >
+              <div className="mobile-cta-left">
+                <span className="mobile-cta-label">selected work</span>
+              </div>
+              <div className="mobile-cta-cluster" aria-hidden="true">
+                {(projectsList ?? projects).slice(0, 3).map((p, idx) => (
+                  <span
+                    key={p.id}
+                    className={`mobile-cta-thumb thumb-${idx}`}
+                    style={{
+                      background: p.accent || '#ffffff',
+                    }}
+                  >
+                    {p.logo ? (
+                      <img
+                        src={p.logo}
+                        alt=""
+                        className={`mobile-cta-thumb-img ${p.logoFull ? 'is-full' : ''}`}
+                      />
+                    ) : (
+                      <span className="mobile-cta-thumb-fallback">{p.mark}</span>
+                    )}
+                  </span>
+                ))}
+              </div>
             </button>
           </div>
         )}
@@ -441,7 +477,10 @@ function App() {
   return (
     <main className="viewport-shell">
       {/* Mobile Navigation Bar matching reference image */}
-      <header className="mobile-header" aria-label="Mobile Navigation">
+      <header
+        className={`mobile-header ${selectedProject || mobileTab === 'work' ? 'mobile-header-work' : 'mobile-header-home'}`}
+        aria-label="Mobile Navigation"
+      >
         {selectedProject ? (
           <>
             <button className="mobile-back-btn" onClick={handleBack} aria-label="Back to work">
@@ -461,7 +500,6 @@ function App() {
         ) : (
           <>
             <span className="mobile-header-brand">About me</span>
-            <div className="mobile-header-spacer" />
             <a
               href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
               target="_blank"
@@ -513,7 +551,12 @@ function App() {
                   project={selectedProject}
                 />
               ) : (
-                <IntroPanel key="intro" onGoWork={() => setMobileTab('work')} workCount={visibleProjects.length} />
+                <IntroPanel
+                  key="intro"
+                  onGoWork={() => setMobileTab('work')}
+                  workCount={visibleProjects.length}
+                  projectsList={visibleProjects}
+                />
               )}
             </AnimatePresence>
           </div>
