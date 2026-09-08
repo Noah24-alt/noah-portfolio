@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { FadeUpReveal, HighlightedWord, MaskedLine, PAGE_EXIT_TRANSITION, ScrollReveal } from './components/TextReveal'
 import { getImageDimensions, getOptimizedImageUrl, getResponsiveSrcSet, PROJECT_IMAGE_SIZES } from './utils/image'
 
 type Project = {
@@ -156,7 +157,7 @@ function BrandCard({ onHome }: { onHome: () => void }) {
           width={44}
           height={44}
           loading="eager"
-          fetchPriority="high"
+          {...{ fetchpriority: 'high' }}
           decoding="async"
         />
       </span>
@@ -231,10 +232,10 @@ function IntroPanel({
   return (
     <motion.div
       className="detail-content intro-panel"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.28 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={PAGE_EXIT_TRANSITION}
     >
       <div className="intro-bg-video-wrapper" aria-hidden="true">
         <div
@@ -261,25 +262,28 @@ function IntroPanel({
 
       <div className="intro-content-inner">
         <h1>
-          Designing simple, <br className="intro-title-br" />useful experiences.
+          <MaskedLine delay={0} yOffset={24} duration={0.8}>Designing simple,</MaskedLine>
+          <MaskedLine delay={0.08} yOffset={24} duration={0.8}>useful experiences.</MaskedLine>
         </h1>
-        <div className="intro-copy">
+        <FadeUpReveal delay={0.2} yOffset={16} duration={0.6} className="intro-copy">
           <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience. I enjoy turning ideas into simple, thoughtful digital experiences.</p>
-        </div>
-        <div className="contact-block">
+        </FadeUpReveal>
+        <FadeUpReveal delay={0.28} yOffset={16} duration={0.6} className="contact-block">
           <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
           <a href="mailto:tuannvfpt18@gmail.com" className="contact-email">tuannvfpt18@gmail.com</a>
-        </div>
-        <a
-          href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="resume-btn"
-        >
-          Resume ↗
-        </a>
+        </FadeUpReveal>
+        <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="desktop-resume-btn-wrap">
+          <a
+            href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="resume-btn"
+          >
+            Resume ↗
+          </a>
+        </FadeUpReveal>
         {onGoWork && (
-          <div className="mobile-work-cta-wrap">
+          <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="mobile-work-cta-wrap">
             <button
               type="button"
               className="mobile-work-card-cta"
@@ -311,7 +315,7 @@ function IntroPanel({
                 ))}
               </div>
             </button>
-          </div>
+          </FadeUpReveal>
         )}
       </div>
     </motion.div>
@@ -344,31 +348,37 @@ function ProjectImageWithSkeleton({ imgSrc, index, total, projectTitle }: Projec
   }, [imgSrc])
 
   return (
-    <div
-      className={`skeleton-image-wrapper ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
-      style={{
-        aspectRatio: dims?.aspectRatio,
-      }}
+    <ScrollReveal
+      delay={index === 0 ? 0.28 : 0.08}
+      duration={0.7}
+      yOffset={16}
     >
       <div
-        className={`skeleton-placeholder skeleton-shimmer ${positionClass} ${isLoaded ? 'is-hidden' : ''}`}
-        aria-hidden="true"
-      />
-      <img
-        ref={imgRef}
-        src={optimizedSrc}
-        srcSet={srcSet}
-        sizes={srcSet ? PROJECT_IMAGE_SIZES : undefined}
-        alt={`${projectTitle} showcase ${index + 1}`}
-        className={`project-illustration-img ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
-        width={dims?.width}
-        height={dims?.height}
-        loading={isFirst ? 'eager' : 'lazy'}
-        fetchPriority={isFirst ? 'high' : 'low'}
-        decoding={isFirst ? 'sync' : 'async'}
-        onLoad={() => setIsLoaded(true)}
-      />
-    </div>
+        className={`skeleton-image-wrapper ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
+        style={{
+          aspectRatio: dims?.aspectRatio,
+        }}
+      >
+        <div
+          className={`skeleton-placeholder skeleton-shimmer ${positionClass} ${isLoaded ? 'is-hidden' : ''}`}
+          aria-hidden="true"
+        />
+        <img
+          ref={imgRef}
+          src={optimizedSrc}
+          srcSet={srcSet}
+          sizes={srcSet ? PROJECT_IMAGE_SIZES : undefined}
+          alt={`${projectTitle} showcase ${index + 1}`}
+          className={`project-illustration-img ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
+          width={dims?.width}
+          height={dims?.height}
+          loading={isFirst ? 'eager' : 'lazy'}
+          {...{ fetchpriority: isFirst ? 'high' : 'low' }}
+          decoding={isFirst ? 'sync' : 'async'}
+          onLoad={() => setIsLoaded(true)}
+        />
+      </div>
+    </ScrollReveal>
   )
 }
 
@@ -378,34 +388,42 @@ function ProjectPanel({ project }: { project: Project }) {
   return (
     <motion.div
       className="detail-content project-panel"
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={PAGE_EXIT_TRANSITION}
     >
       <header className="project-editorial-card">
         <div className="editorial-col-title">
-          <h1 className="editorial-title">{project.title}</h1>
+          <h1 className="editorial-title">
+            <MaskedLine delay={0.05}>{project.title}</MaskedLine>
+          </h1>
         </div>
 
         <div className="editorial-col-desc">
           <div className="project-metadata-grid" aria-label="Project details">
-            <div className="metadata-item">
-              <span className="metadata-label">Role</span>
-              <span className="metadata-value">{project.role || 'Design Lead'}</span>
-            </div>
-            <div className="metadata-item">
-              <span className="metadata-label">Platform</span>
-              <span className="metadata-value">{project.platform || 'iOS & Android'}</span>
-            </div>
-            <div className="metadata-item">
-              <span className="metadata-label">Status</span>
-              <span className="metadata-value">{project.status || 'Launched'}</span>
-            </div>
+            <FadeUpReveal delay={0.12}>
+              <div className="metadata-item">
+                <span className="metadata-label">Role</span>
+                <span className="metadata-value">{project.role || 'Design Lead'}</span>
+              </div>
+            </FadeUpReveal>
+            <FadeUpReveal delay={0.18}>
+              <div className="metadata-item">
+                <span className="metadata-label">Platform</span>
+                <span className="metadata-value">{project.platform || 'iOS & Android'}</span>
+              </div>
+            </FadeUpReveal>
+            <FadeUpReveal delay={0.24}>
+              <div className="metadata-item">
+                <span className="metadata-label">Status</span>
+                <span className="metadata-value">{project.status || 'Launched'}</span>
+              </div>
+            </FadeUpReveal>
           </div>
         </div>
 
-        <div className="editorial-col-tags">
+        <FadeUpReveal delay={0.3} className="editorial-col-tags">
           <div className="editorial-tags">
             {project.tags.map((tag) => (
               <span key={tag} className="bento-tag">
@@ -414,7 +432,7 @@ function ProjectPanel({ project }: { project: Project }) {
               </span>
             ))}
           </div>
-        </div>
+        </FadeUpReveal>
       </header>
 
       {projectImages.length > 0 && (
@@ -521,20 +539,21 @@ function App() {
             <div className="brand-card-desktop-only">
               <BrandCard onHome={handleHome} />
             </div>
-            <div className="work-section-title">Projects</div>
+            <FadeUpReveal delay={0.06} className="work-section-title">Projects</FadeUpReveal>
           </div>
           <div
             ref={railRef}
             className="projects-scroll work-list"
             aria-label="Selected work"
           >
-            {visibleProjects.map((project) => (
-              <WorkCard
-                key={project.id}
-                project={project}
-                active={selectedId === project.id}
-                onClick={() => handleSelectProject(project.id)}
-              />
+            {visibleProjects.map((project, idx) => (
+              <FadeUpReveal key={project.id} delay={0.1 + idx * 0.04} yOffset={8}>
+                <WorkCard
+                  project={project}
+                  active={selectedId === project.id}
+                  onClick={() => handleSelectProject(project.id)}
+                />
+              </FadeUpReveal>
             ))}
           </div>
         </aside>
