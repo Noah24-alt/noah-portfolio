@@ -16,31 +16,43 @@ type Project = {
   logo?: string
   logoFull?: boolean
   image?: string
+  images?: string[]
+  platform?: string
+  status?: string
+  hidden?: boolean
 }
 
 const projects: Project[] = [
   {
     id: 'alphy',
     title: 'Alphy',
-    description: 'seamless web3 trading across twitter, telegram & dex',
+    description: 'Connecting social insights with crypto trading.',
     tags: ['Trading', 'Perp', 'AI Signal'],
     year: '2026',
-    role: 'product designer',
+    role: 'Product Designer',
+    platform: 'Web & Extension',
+    status: 'Launched',
     problem: 'Crypto traders face fragmented workflows and high friction switching between social channels, alpha signals, and disconnected DEX interfaces.',
     solution: 'I designed an embedded Web3 layer integrating real-time AI signals, perp trading, and fast execution directly into platforms like Twitter, Telegram, Pump Fun, and Dexscreener.',
     impact: 'A robust, secure, and unified trading experience that makes complex on-chain execution effortless for both beginner and veteran crypto users.',
     accent: '#ffffff',
     mark: 'A',
     logo: '/alphy.png?v=3',
-    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788579397/alphy01.webp',
+    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788842950/Alphy.webp',
+    images: [
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788842950/Alphy.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788844336/Alphy_2.webp',
+    ],
   },
   {
     id: 'paywithcrypto',
     title: 'PaywithCrypto',
-    description: 'seamless crypto payments & unified wallet experience',
+    description: 'Bringing crypto into everyday payments.',
     tags: ['Wallet', 'Payment'],
     year: '2026',
-    role: 'lead product designer',
+    role: 'Design Lead',
+    platform: 'iOS & Android',
+    status: 'Launched',
     problem: 'Users and merchants face high friction, confusing blockchain addresses, and fragmented fiat on/off ramp services.',
     solution: 'I designed a streamlined payment checkout, embedded smart wallet flows, and transparent on/off ramp interactions.',
     impact: 'Reduced transaction drop-off, clearer fee breakdowns, and a trustworthy payment flow for everyday crypto transactions.',
@@ -48,14 +60,21 @@ const projects: Project[] = [
     mark: 'P',
     logo: '/paywithcrypto.png?v=4',
     logoFull: true,
+    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841377/PWC.webp',
+    images: [
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841377/PWC.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841520/PWC_2.webp',
+    ],
   },
   {
     id: 'alixpay',
     title: 'Alix Pay',
-    description: 'decision support for people working with complex data',
+    description: 'Seamless crypto payments anytime, anywhere.',
     tags: ['Scan QR', 'Payment'],
     year: '2025',
-    role: 'product designer',
+    role: 'Product Designer',
+    platform: 'Mini-App',
+    status: 'Live',
     problem: 'Important signals were buried inside dense dashboards designed around data structures instead of user decisions.',
     solution: 'I reframed the experience around questions, alerts, and actionable summaries while preserving access to deeper analysis.',
     impact: 'Faster scanning, clearer priorities, and a product that better supported day-to-day decision making.',
@@ -63,6 +82,11 @@ const projects: Project[] = [
     mark: 'A',
     logo: '/alixpay.png?v=4',
     logoFull: true,
+    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788844231/Alix.webp',
+    images: [
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788844231/Alix.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788843417/Alix_2.webp',
+    ],
   },
   {
     id: 'meyfi',
@@ -70,7 +94,10 @@ const projects: Project[] = [
     description: 'a mobile service experience designed around trust',
     tags: ['RWA', 'Staking'],
     year: '2025',
-    role: 'ux / ui designer',
+    role: 'UX / UI Designer',
+    platform: 'iOS & Android',
+    status: 'Launched',
+    hidden: true,
     problem: 'Users did not know what would happen after submitting a request, creating anxiety and repeat support contacts.',
     solution: 'I redesigned the end-to-end status model, notifications, and service timeline to make progress visible at every stage.',
     impact: 'A more transparent journey with clearer expectations and fewer ambiguous states.',
@@ -85,7 +112,10 @@ const projects: Project[] = [
     description: 'human-centered workflows for an ai-assisted product',
     tags: ['Healthy', 'App'],
     year: '2025',
-    role: 'product designer',
+    role: 'Product Designer',
+    platform: 'iOS & Android',
+    status: 'Launched',
+    hidden: true,
     problem: 'The first concept exposed too much system complexity and made users responsible for writing perfect prompts.',
     solution: 'I designed guided starting points, editable assumptions, and visible reasoning checkpoints to keep users in control.',
     impact: 'A more approachable workflow that focused on outcomes rather than prompt engineering.',
@@ -100,7 +130,10 @@ const projects: Project[] = [
     description: 'a design system built for scaling product teams',
     tags: ['Quest', 'Newsfeed', 'UX'],
     year: '2024',
-    role: 'product designer',
+    role: 'Product Designer',
+    platform: 'Web & Mobile',
+    status: 'Launched',
+    hidden: true,
     problem: 'Product surfaces had drifted apart as teams shipped quickly with inconsistent components and patterns.',
     solution: 'I audited the interface, defined foundations and reusable components, and documented contribution rules for the team.',
     impact: 'More consistent product quality and a faster path from design decisions to implementation.',
@@ -159,7 +192,7 @@ function WorkCard({ project, active, onClick }: { project: Project; active: bool
   )
 }
 
-function IntroPanel({ onGoWork }: { onGoWork?: () => void }) {
+function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?: number }) {
   return (
     <motion.div
       className="detail-content intro-panel"
@@ -200,10 +233,18 @@ function IntroPanel({ onGoWork }: { onGoWork?: () => void }) {
           <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
           <a href="mailto:tuannvfpt18@gmail.com" className="contact-email">tuannvfpt18@gmail.com</a>
         </div>
+        <a
+          href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="resume-btn"
+        >
+          Resume ↗
+        </a>
         {onGoWork && (
           <div className="mobile-work-cta-wrap">
             <button className="mobile-work-cta" onClick={onGoWork}>
-              View Selected Work ({projects.length}) →
+              View Selected Work ({workCount ?? 3}) →
             </button>
           </div>
         )}
@@ -213,6 +254,8 @@ function IntroPanel({ onGoWork }: { onGoWork?: () => void }) {
 }
 
 function ProjectPanel({ project }: { project: Project }) {
+  const projectImages = project.images ?? (project.image ? [project.image] : [])
+
   return (
     <motion.div
       className="detail-content project-panel"
@@ -227,7 +270,20 @@ function ProjectPanel({ project }: { project: Project }) {
         </div>
 
         <div className="editorial-col-desc">
-          <p className="editorial-description">{project.description}</p>
+          <div className="project-metadata-grid" aria-label="Project details">
+            <div className="metadata-item">
+              <span className="metadata-label">Role</span>
+              <span className="metadata-value">{project.role || 'Design Lead'}</span>
+            </div>
+            <div className="metadata-item">
+              <span className="metadata-label">Platform</span>
+              <span className="metadata-value">{project.platform || 'iOS & Android'}</span>
+            </div>
+            <div className="metadata-item">
+              <span className="metadata-label">Status</span>
+              <span className="metadata-value">{project.status || 'Launched'}</span>
+            </div>
+          </div>
         </div>
 
         <div className="editorial-col-tags">
@@ -242,13 +298,16 @@ function ProjectPanel({ project }: { project: Project }) {
         </div>
       </header>
 
-      {project.image && (
+      {projectImages.length > 0 && (
         <div className="project-illustration">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="project-illustration-img"
-          />
+          {projectImages.map((imgSrc, index) => (
+            <img
+              key={index}
+              src={imgSrc}
+              alt={`${project.title} ${index + 1}`}
+              className="project-illustration-img"
+            />
+          ))}
         </div>
       )}
     </motion.div>
@@ -258,6 +317,10 @@ function ProjectPanel({ project }: { project: Project }) {
 function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [mobileTab, setMobileTab] = useState<'work' | 'intro'>('work')
+  const visibleProjects = useMemo(
+    () => projects.filter((project) => !project.hidden),
+    [],
+  )
   const selectedProject = useMemo(
     () => projects.find((project) => project.id === selectedId) ?? null,
     [selectedId],
@@ -315,9 +378,15 @@ function App() {
           <>
             <span className="mobile-header-brand">About me</span>
             <div className="mobile-header-spacer" />
-            <button className="mobile-nav-pill" onClick={() => setMobileTab('work')} aria-label="View work">
-              Work ({projects.length}) →
-            </button>
+            <a
+              href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-header-resume"
+              aria-label="View Resume"
+            >
+              Resume ↗
+            </a>
           </>
         )}
       </header>
@@ -337,7 +406,7 @@ function App() {
             className="projects-scroll work-list"
             aria-label="Selected work"
           >
-            {projects.map((project) => (
+            {visibleProjects.map((project) => (
               <WorkCard
                 key={project.id}
                 project={project}
@@ -360,7 +429,7 @@ function App() {
                   project={selectedProject}
                 />
               ) : (
-                <IntroPanel key="intro" onGoWork={() => setMobileTab('work')} />
+                <IntroPanel key="intro" onGoWork={() => setMobileTab('work')} workCount={visibleProjects.length} />
               )}
             </AnimatePresence>
           </div>
