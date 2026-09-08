@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { getImageDimensions, getOptimizedImageUrl, getResponsiveSrcSet, PROJECT_IMAGE_SIZES } from './utils/image'
 
 type Project = {
   id: string
@@ -82,10 +83,10 @@ const projects: Project[] = [
     mark: 'A',
     logo: '/alixpay.png?v=4',
     logoFull: true,
-    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788844231/Alix.webp',
+    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788849676/Alix.webp',
     images: [
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788844231/Alix.webp',
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788843417/Alix_2.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788849676/Alix.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788849667/Alix_2.webp',
     ],
   },
   {
@@ -148,7 +149,16 @@ function BrandCard({ onHome }: { onHome: () => void }) {
   return (
     <button className="brand-card" onClick={onHome} aria-label="Show About me">
       <span className="brand-mark">
-        <img src="/avatar.png?v=2" alt="About me" className="brand-logo-img" />
+        <img
+          src="/avatar.png?v=3"
+          alt="About me"
+          className="brand-logo-img"
+          width={44}
+          height={44}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
       </span>
       <span className="brand-name">About me</span>
       <span className="brand-copy">i design digital products that make complex things feel clear, useful and memorable.</span>
@@ -175,6 +185,10 @@ function WorkCard({ project, active, onClick }: { project: Project; active: bool
             src={project.logo}
             alt={project.title}
             className={`work-logo-img ${project.logoFull ? 'is-full' : ''}`}
+            width={40}
+            height={40}
+            loading="eager"
+            decoding="async"
           />
         ) : (
           project.mark
@@ -193,6 +207,19 @@ function WorkCard({ project, active, onClick }: { project: Project; active: bool
 }
 
 function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?: number }) {
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true
+      videoRef.current.play().catch(() => {})
+      if (videoRef.current.readyState >= 3) {
+        setVideoLoaded(true)
+      }
+    }
+  }, [])
+
   return (
     <motion.div
       className="detail-content intro-panel"
@@ -202,19 +229,22 @@ function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?
       transition={{ duration: 0.28 }}
     >
       <div className="intro-bg-video-wrapper" aria-hidden="true">
+        <div
+          className={`intro-skeleton skeleton-shimmer ${videoLoaded ? 'is-hidden' : ''}`}
+          aria-hidden="true"
+        />
         <video
-          ref={(el) => {
-            if (el) {
-              el.muted = true
-              el.play().catch(() => {})
-            }
-          }}
-          className="intro-bg-video"
+          ref={videoRef}
+          className={`intro-bg-video ${videoLoaded ? 'is-loaded' : ''}`}
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
+          poster="https://res.cloudinary.com/jzcct3wg/video/upload/so_0,f_auto,q_80,w_1200/v1788536691/bg_test.jpg"
+          onLoadedData={() => setVideoLoaded(true)}
+          onPlaying={() => setVideoLoaded(true)}
+          onCanPlay={() => setVideoLoaded(true)}
         >
           <source src="/bg_test.mp4" type="video/mp4" />
           <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788536691/bg_test.mp4" type="video/mp4" />
@@ -250,6 +280,60 @@ function IntroPanel({ onGoWork, workCount }: { onGoWork?: () => void; workCount?
         )}
       </div>
     </motion.div>
+  )
+}
+
+interface ProjectImageWithSkeletonProps {
+  imgSrc: string
+  index: number
+  total: number
+  projectTitle: string
+}
+
+function ProjectImageWithSkeleton({ imgSrc, index, total, projectTitle }: ProjectImageWithSkeletonProps) {
+  const [isLoaded, setIsLoaded] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const isFirst = index === 0
+  const isLast = index === total - 1
+  const isSingle = total === 1
+  const positionClass = isSingle ? 'is-single' : isFirst ? 'is-first' : isLast ? 'is-last' : 'is-middle'
+
+  const dims = useMemo(() => getImageDimensions(imgSrc), [imgSrc])
+  const optimizedSrc = useMemo(() => getOptimizedImageUrl(imgSrc, 1600), [imgSrc])
+  const srcSet = useMemo(() => getResponsiveSrcSet(imgSrc), [imgSrc])
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true)
+    }
+  }, [imgSrc])
+
+  return (
+    <div
+      className={`skeleton-image-wrapper ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
+      style={{
+        aspectRatio: dims?.aspectRatio,
+      }}
+    >
+      <div
+        className={`skeleton-placeholder skeleton-shimmer ${positionClass} ${isLoaded ? 'is-hidden' : ''}`}
+        aria-hidden="true"
+      />
+      <img
+        ref={imgRef}
+        src={optimizedSrc}
+        srcSet={srcSet}
+        sizes={srcSet ? PROJECT_IMAGE_SIZES : undefined}
+        alt={`${projectTitle} showcase ${index + 1}`}
+        className={`project-illustration-img ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
+        width={dims?.width}
+        height={dims?.height}
+        loading={isFirst ? 'eager' : 'lazy'}
+        fetchPriority={isFirst ? 'high' : 'low'}
+        decoding={isFirst ? 'sync' : 'async'}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
   )
 }
 
@@ -301,11 +385,12 @@ function ProjectPanel({ project }: { project: Project }) {
       {projectImages.length > 0 && (
         <div className="project-illustration">
           {projectImages.map((imgSrc, index) => (
-            <img
-              key={index}
-              src={imgSrc}
-              alt={`${project.title} ${index + 1}`}
-              className="project-illustration-img"
+            <ProjectImageWithSkeleton
+              key={imgSrc}
+              imgSrc={imgSrc}
+              index={index}
+              total={projectImages.length}
+              projectTitle={project.title}
             />
           ))}
         </div>
@@ -316,7 +401,7 @@ function ProjectPanel({ project }: { project: Project }) {
 
 function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [mobileTab, setMobileTab] = useState<'work' | 'intro'>('work')
+  const [mobileTab, setMobileTab] = useState<'work' | 'intro'>('intro')
   const visibleProjects = useMemo(
     () => projects.filter((project) => !project.hidden),
     [],
