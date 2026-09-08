@@ -289,7 +289,7 @@ function IntroPanel({
         </FadeUpReveal>
         <FadeUpReveal delay={0.28} yOffset={16} duration={0.6} className="contact-block">
           <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
-          <a href="mailto:tuannvfpt18@gmail.com" className="contact-email">tuannvfpt18@gmail.com</a>
+          <a href="mailto:hello@tuans.work" className="contact-email">hello@tuans.work</a>
         </FadeUpReveal>
         <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="desktop-resume-btn-wrap">
           <a
