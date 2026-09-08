@@ -492,6 +492,51 @@ function ProjectPanel({ project }: { project: Project }) {
   )
 }
 
+function getHoChiMinhTime(): string {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date())
+  const hour = parts.find((p) => p.type === 'hour')?.value || '00'
+  const minute = parts.find((p) => p.type === 'minute')?.value || '00'
+  return `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`
+}
+
+function HoChiMinhTime() {
+  const [time, setTime] = useState(getHoChiMinhTime)
+
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval>
+    const update = () => setTime(getHoChiMinhTime())
+
+    // Update when returning to tab from background
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        update()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    // Synchronize to the next full minute boundary, then update every 60 seconds
+    const now = new Date()
+    const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds() + 50
+    const timeoutId = setTimeout(() => {
+      update()
+      intervalId = setInterval(update, 60000)
+    }, Math.max(msUntilNextMinute, 1000))
+
+    return () => {
+      clearTimeout(timeoutId)
+      if (intervalId) clearInterval(intervalId)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+
+  return <span>Ho Chi Minh · {time}</span>
+}
+
 function App() {
   const router = usePortfolioRouter()
   const visibleProjects = useMemo(
@@ -515,7 +560,6 @@ function App() {
 
   const isMobileWork = router.route.type === 'work'
   const mobileTab: 'work' | 'intro' = isMobileWork || selectedProject ? 'work' : 'intro'
-  const year = new Date().getFullYear()
 
   const railRef = useRef<HTMLDivElement>(null)
   const detailRef = useRef<HTMLDivElement>(null)
@@ -671,7 +715,7 @@ function App() {
                   <span className="status-dot" aria-hidden="true" />
                   Open for work
                 </span>
-                <span>© Tuan Nguyen {year}</span>
+                <HoChiMinhTime />
               </motion.footer>
             )}
           </AnimatePresence>
