@@ -74,12 +74,12 @@ const projects: Project[] = [
     mark: 'P',
     logo: '/paywithcrypto.png?v=4',
     logoFull: true,
-    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789140352/PWC_01.webp',
+    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789145447/PWC_01.webp',
     mobileThumbnail: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789116844/phone_PWC.webp',
     images: [
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789140352/PWC_01.webp',
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789140362/PWC_02.webp',
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789139324/PWC_03.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789145447/PWC_01.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789145456/PWC_02.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789145465/PWC_03.webp',
     ],
   },
   {
