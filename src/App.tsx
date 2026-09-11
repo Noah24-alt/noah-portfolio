@@ -74,11 +74,12 @@ const projects: Project[] = [
     mark: 'P',
     logo: '/paywithcrypto.png?v=4',
     logoFull: true,
-    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841377/PWC.webp',
+    image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789140352/PWC_01.webp',
     mobileThumbnail: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789116844/phone_PWC.webp',
     images: [
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841377/PWC.webp',
-      'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841520/PWC_2.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789140352/PWC_01.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789140362/PWC_02.webp',
+      'https://res.cloudinary.com/jzcct3wg/image/upload/v1789139324/PWC_03.webp',
     ],
   },
   {
@@ -433,7 +434,8 @@ function ProjectImageWithSkeleton({ imgSrc, index, total, projectTitle }: Projec
     <ScrollReveal
       delay={index === 0 ? 0.28 : 0.08}
       duration={0.7}
-      yOffset={16}
+      yOffset={index === 0 ? 16 : 0}
+      amount={0}
     >
       <div
         className={`skeleton-image-wrapper ${positionClass} ${isLoaded ? 'is-loaded' : ''}`}
