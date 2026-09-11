@@ -466,7 +466,80 @@ function ProjectImageWithSkeleton({ imgSrc, index, total, projectTitle }: Projec
   )
 }
 
-function ProjectPanel({ project }: { project: Project }) {
+function getHoChiMinhTime(): string {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date())
+  const hour = parts.find((p) => p.type === 'hour')?.value || '00'
+  const minute = parts.find((p) => p.type === 'minute')?.value || '00'
+  return `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`
+}
+
+function HoChiMinhTime() {
+  const [time, setTime] = useState(getHoChiMinhTime)
+
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval>
+    const update = () => setTime(getHoChiMinhTime())
+
+    // Update when returning to tab from background
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        update()
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    // Synchronize to the next full minute boundary, then update every 60 seconds
+    const now = new Date()
+    const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds() + 50
+    const timeoutId = setTimeout(() => {
+      update()
+      intervalId = setInterval(update, 60000)
+    }, Math.max(msUntilNextMinute, 1000))
+
+    return () => {
+      clearTimeout(timeoutId)
+      if (intervalId) clearInterval(intervalId)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+
+  return <span>Ho Chi Minh · {time}</span>
+}
+
+interface SiteFooterProps {
+  onScrollToTop?: () => void
+  showBackToTopOnDesktop?: boolean
+}
+
+function SiteFooter({ onScrollToTop, showBackToTopOnDesktop = false }: SiteFooterProps) {
+  return (
+    <div className={`site-footer-inner ${showBackToTopOnDesktop ? 'has-desktop-back-to-top' : ''}`}>
+      <div className="footer-left">
+        <span className="footer-status">
+          <span className="status-dot" aria-hidden="true" />
+          Open for work
+        </span>
+        <span className="footer-dot-sep">·</span>
+        <HoChiMinhTime />
+      </div>
+      <button
+        type="button"
+        className="footer-back-to-top"
+        onClick={onScrollToTop}
+        aria-label="Back to top"
+      >
+        <span className="desktop-dot">· </span>Back to top ↑
+      </button>
+    </div>
+  )
+}
+
+function ProjectPanel({ project, onScrollToTop }: { project: Project; onScrollToTop?: () => void }) {
   const projectImages = project.images ?? (project.image ? [project.image] : [])
 
   return (
@@ -532,53 +605,12 @@ function ProjectPanel({ project }: { project: Project }) {
           ))}
         </div>
       )}
+
+      <footer className="site-footer project-footer">
+        <SiteFooter onScrollToTop={onScrollToTop} showBackToTopOnDesktop={true} />
+      </footer>
     </motion.div>
   )
-}
-
-function getHoChiMinhTime(): string {
-  const parts = new Intl.DateTimeFormat('en-GB', {
-    timeZone: 'Asia/Ho_Chi_Minh',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  }).formatToParts(new Date())
-  const hour = parts.find((p) => p.type === 'hour')?.value || '00'
-  const minute = parts.find((p) => p.type === 'minute')?.value || '00'
-  return `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}`
-}
-
-function HoChiMinhTime() {
-  const [time, setTime] = useState(getHoChiMinhTime)
-
-  useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval>
-    const update = () => setTime(getHoChiMinhTime())
-
-    // Update when returning to tab from background
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        update()
-      }
-    }
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-
-    // Synchronize to the next full minute boundary, then update every 60 seconds
-    const now = new Date()
-    const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds() + 50
-    const timeoutId = setTimeout(() => {
-      update()
-      intervalId = setInterval(update, 60000)
-    }, Math.max(msUntilNextMinute, 1000))
-
-    return () => {
-      clearTimeout(timeoutId)
-      if (intervalId) clearInterval(intervalId)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [])
-
-  return <span>Ho Chi Minh · {time}</span>
 }
 
 function App() {
@@ -654,6 +686,11 @@ function App() {
     } else if (mobileTab === 'work') {
       router.goBack('/')
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleScrollToTop = () => {
+    detailRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -733,6 +770,7 @@ function App() {
                 <ProjectPanel
                   key={selectedProject.id}
                   project={selectedProject}
+                  onScrollToTop={handleScrollToTop}
                 />
               ) : (
                 <IntroPanel
@@ -750,17 +788,13 @@ function App() {
             {!selectedProject && (
               <motion.footer
                 key="site-footer"
-                className="site-footer"
+                className="site-footer site-footer-home"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <span className="footer-status">
-                  <span className="status-dot" aria-hidden="true" />
-                  Open for work
-                </span>
-                <HoChiMinhTime />
+                <SiteFooter onScrollToTop={handleScrollToTop} showBackToTopOnDesktop={false} />
               </motion.footer>
             )}
           </AnimatePresence>
