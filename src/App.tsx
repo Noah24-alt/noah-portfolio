@@ -10,6 +10,7 @@ type Project = {
   slug: string
   aliases?: string[]
   title: string
+  category?: string
   description: string
   tags: string[]
   year: string
@@ -23,6 +24,7 @@ type Project = {
   logoFull?: boolean
   image?: string
   images?: string[]
+  mobileThumbnail?: string
   platform?: string
   status?: string
   hidden?: boolean
@@ -33,6 +35,7 @@ const projects: Project[] = [
     id: 'alphy',
     slug: 'alphy',
     title: 'Alphy',
+    category: 'Crypto social trading',
     description: 'Connecting social insights with crypto trading.',
     tags: ['Trading', 'Perp', 'AI Signal'],
     year: '2026',
@@ -46,6 +49,7 @@ const projects: Project[] = [
     mark: 'A',
     logo: '/alphy.png?v=3',
     image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788842950/Alphy.webp',
+    mobileThumbnail: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789116842/phone_Alphy.webp',
     images: [
       'https://res.cloudinary.com/jzcct3wg/image/upload/v1788842950/Alphy.webp',
       'https://res.cloudinary.com/jzcct3wg/image/upload/v1788844336/Alphy_2.webp',
@@ -56,6 +60,7 @@ const projects: Project[] = [
     slug: 'pay-with-crypto',
     aliases: ['paywithcrypto'],
     title: 'PaywithCrypto',
+    category: 'Everyday crypto payments',
     description: 'Bringing crypto into everyday payments.',
     tags: ['Wallet', 'Payment'],
     year: '2026',
@@ -70,6 +75,7 @@ const projects: Project[] = [
     logo: '/paywithcrypto.png?v=4',
     logoFull: true,
     image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841377/PWC.webp',
+    mobileThumbnail: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789116844/phone_PWC.webp',
     images: [
       'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841377/PWC.webp',
       'https://res.cloudinary.com/jzcct3wg/image/upload/v1788841520/PWC_2.webp',
@@ -80,6 +86,7 @@ const projects: Project[] = [
     slug: 'alix-pay',
     aliases: ['alixpay'],
     title: 'Alix Pay',
+    category: 'Seamless QR payments',
     description: 'Seamless crypto payments anytime, anywhere.',
     tags: ['Scan QR', 'Payment'],
     year: '2025',
@@ -94,6 +101,7 @@ const projects: Project[] = [
     logo: '/alixpay.png?v=4',
     logoFull: true,
     image: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1788849676/Alix.webp',
+    mobileThumbnail: 'https://res.cloudinary.com/jzcct3wg/image/upload/v1789116843/phone_Alix.webp',
     images: [
       'https://res.cloudinary.com/jzcct3wg/image/upload/v1788849676/Alix.webp',
       'https://res.cloudinary.com/jzcct3wg/image/upload/v1788849667/Alix_2.webp',
@@ -227,14 +235,67 @@ function WorkCard({ project, active, onClick }: { project: Project; active: bool
   )
 }
 
+function MobileProjectCard({
+  project,
+  index,
+  onSelect,
+}: {
+  project: Project
+  index: number
+  onSelect: () => void
+}) {
+  const [isLoaded, setIsLoaded] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
+  const heroImage = project.mobileThumbnail || project.image || project.images?.[0]
+  const optimizedSrc = heroImage ? getOptimizedImageUrl(heroImage, 800) : ''
+  const srcSet = heroImage ? getResponsiveSrcSet(heroImage, [400, 600, 800]) : undefined
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true)
+    }
+  }, [])
+
+  return (
+    <article className="mobile-project-card" onClick={onSelect}>
+      <span className="mobile-project-eyebrow">0{index + 1}</span>
+      {heroImage && (
+        <div className={`mobile-project-img-wrap ${isLoaded ? 'is-loaded' : ''}`}>
+          <img
+            ref={imgRef}
+            src={optimizedSrc}
+            srcSet={srcSet}
+            sizes="(max-width: 768px) 100vw, 800px"
+            alt={project.title}
+            className="mobile-project-image"
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setIsLoaded(true)}
+          />
+        </div>
+      )}
+      <h3 className="mobile-project-title">{project.title}</h3>
+      <p className="mobile-project-desc">{project.description}</p>
+      <div className="mobile-project-tags">
+        {project.tags.map((tag) => (
+          <span key={tag} className="mobile-project-tag">{tag}</span>
+        ))}
+      </div>
+      <span className="mobile-project-cta">View project ↗</span>
+    </article>
+  )
+}
+
 function IntroPanel({
   onGoWork,
   workCount,
   projectsList,
+  onSelectProject,
 }: {
   onGoWork?: () => void
   workCount?: number
   projectsList?: Project[]
+  onSelectProject?: (project: Project) => void
 }) {
   const [videoLoaded, setVideoLoaded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -323,39 +384,20 @@ function IntroPanel({
           </a>
         </FadeUpReveal>
         {onGoWork && (
-          <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="mobile-work-cta-wrap">
-            <button
-              type="button"
-              className="mobile-work-card-cta"
-              onClick={onGoWork}
-              aria-label="View selected work"
-            >
-              <div className="mobile-cta-left">
-                <span className="mobile-cta-label">selected work</span>
-              </div>
-              <div className="mobile-cta-cluster" aria-hidden="true">
-                {(projectsList ?? projects).slice(0, 3).map((p, idx) => (
-                  <span
-                    key={p.id}
-                    className={`mobile-cta-thumb thumb-${idx}`}
-                    style={{
-                      background: p.accent || '#ffffff',
-                    }}
-                  >
-                    {p.logo ? (
-                      <img
-                        src={p.logo}
-                        alt=""
-                        className={`mobile-cta-thumb-img ${p.logoFull ? 'is-full' : ''}`}
-                      />
-                    ) : (
-                      <span className="mobile-cta-thumb-fallback">{p.mark}</span>
-                    )}
-                  </span>
-                ))}
-              </div>
-            </button>
-          </FadeUpReveal>
+          <div className="mobile-projects-section">
+            <FadeUpReveal delay={0.36} yOffset={16} duration={0.6}>
+              <h2 className="mobile-projects-heading">Selected Work</h2>
+            </FadeUpReveal>
+            {(projectsList ?? projects).filter(p => !p.hidden).slice(0, 3).map((project, idx) => (
+              <ScrollReveal key={project.id} delay={0.1} yOffset={16}>
+                <MobileProjectCard
+                  project={project}
+                  index={idx}
+                  onSelect={() => onSelectProject?.(project)}
+                />
+              </ScrollReveal>
+            ))}
+          </div>
         )}
       </div>
     </motion.div>
@@ -696,6 +738,7 @@ function App() {
                   onGoWork={handleGoWork}
                   workCount={visibleProjects.length}
                   projectsList={visibleProjects}
+                  onSelectProject={handleSelectProject}
                 />
               )}
             </AnimatePresence>

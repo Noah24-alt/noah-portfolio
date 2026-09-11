@@ -67,6 +67,9 @@ export const PROJECT_IMAGE_METADATA: Record<string, ImageDimensions> = {
   'PWC_2.webp': { width: 4128, height: 9564, aspectRatio: '4128 / 9564' },
   'Alix.webp': { width: 2064, height: 4844, aspectRatio: '2064 / 4844' },
   'Alix_2.webp': { width: 2064, height: 3916, aspectRatio: '2064 / 3916' },
+  'phone_Alphy.webp': { width: 2064, height: 1290, aspectRatio: '2064 / 1290' },
+  'phone_PWC.webp': { width: 2064, height: 1290, aspectRatio: '2064 / 1290' },
+  'phone_Alix.webp': { width: 2064, height: 1290, aspectRatio: '2064 / 1290' },
 }
 
 export function getImageDimensions(url: string): ImageDimensions | undefined {
