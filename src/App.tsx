@@ -421,7 +421,7 @@ function SiteFooter({ onScrollToTop, showBackToTopOnDesktop = false }: SiteFoote
   )
 }
 
-const ABOUT_ME_IMAGE = 'https://res.cloudinary.com/jzcct3wg/image/upload/v1792573357/PORTFOLIO_-_NGUYEN_VAN_TUAN.webp'
+const ABOUT_ME_IMAGE = 'https://res.cloudinary.com/jzcct3wg/image/upload/v1792576900/PORTFOLIO_-_NGUYEN_VAN_TUAN.webp'
 const RESUME_URL = 'https://drive.google.com/file/d/1_FfxRF0d0xdtn6ZSNwx0BWu2QWXViUwf/view?usp=sharing'
 
 function IntroPanel({
