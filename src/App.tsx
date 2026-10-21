@@ -287,124 +287,6 @@ function MobileProjectCard({
   )
 }
 
-function IntroPanel({
-  onGoWork,
-  workCount,
-  projectsList,
-  onSelectProject,
-}: {
-  onGoWork?: () => void
-  workCount?: number
-  projectsList?: Project[]
-  onSelectProject?: (project: Project) => void
-}) {
-  const [videoLoaded, setVideoLoaded] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = (e: React.MouseEvent) => {
-    e.preventDefault()
-    navigator.clipboard.writeText('hello@tuans.work')
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true
-      videoRef.current.play().catch(() => {})
-      if (videoRef.current.readyState >= 3) {
-        setVideoLoaded(true)
-      }
-    }
-  }, [])
-
-  return (
-    <motion.div
-      className="detail-content intro-panel"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={PAGE_EXIT_TRANSITION}
-    >
-      <StickerPlayground>
-        <div
-          className={`intro-skeleton skeleton-shimmer ${videoLoaded ? 'is-hidden' : ''}`}
-          aria-hidden="true"
-        />
-        <video
-          ref={videoRef}
-          className={`intro-bg-video ${videoLoaded ? 'is-loaded' : ''}`}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="https://res.cloudinary.com/jzcct3wg/video/upload/so_0,f_auto,q_80,w_1200/v1788859893/Mascot_working_at_desk_1080p_202609081630.jpg"
-          onLoadedData={() => setVideoLoaded(true)}
-          onPlaying={() => setVideoLoaded(true)}
-          onCanPlay={() => setVideoLoaded(true)}
-        >
-          <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788859893/Mascot_working_at_desk_1080p_202609081630.mp4" type="video/mp4" />
-        </video>
-      </StickerPlayground>
-
-      <div className="intro-content-inner">
-        <h1>
-          <MaskedLine delay={0} yOffset={24} duration={0.8}>Designing <span className="heading-highlight" style={{ color: '#485CE3', fontStyle: 'italic', fontFamily: "'Caveat', cursive" }}>simple</span></MaskedLine>
-          <MaskedLine delay={0.08} yOffset={24} duration={0.8}>useful experiences.</MaskedLine>
-        </h1>
-        <FadeUpReveal delay={0.2} yOffset={16} duration={0.6} className="intro-copy">
-          <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience. I enjoy turning complex ideas into simple, useful digital experiences.</p>
-        </FadeUpReveal>
-        <FadeUpReveal delay={0.28} yOffset={16} duration={0.6} className="contact-block">
-          <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
-          <div className="contact-email-group">
-            <a href="mailto:hello@tuans.work" className="contact-email">hello@tuans.work</a>
-            <button
-              className={`copy-email-btn ${copied ? 'success' : ''}`}
-              onClick={handleCopy}
-              aria-label="Copy email address"
-            >
-              {copied ? (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              )}
-            </button>
-          </div>
-        </FadeUpReveal>
-        <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="desktop-resume-btn-wrap">
-          <a
-            href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="resume-btn"
-          >
-            Resume ↗
-          </a>
-        </FadeUpReveal>
-        {onGoWork && (
-          <div className="mobile-projects-section">
-            <FadeUpReveal delay={0.36} yOffset={16} duration={0.6}>
-              <h2 className="mobile-projects-heading">Selected Work</h2>
-            </FadeUpReveal>
-            {(projectsList ?? projects).filter(p => !p.hidden).slice(0, 3).map((project, idx) => (
-              <ScrollReveal key={project.id} delay={0.1} yOffset={16}>
-                <MobileProjectCard
-                  project={project}
-                  index={idx}
-                  onSelect={() => onSelectProject?.(project)}
-                />
-              </ScrollReveal>
-            ))}
-          </div>
-        )}
-      </div>
-    </motion.div>
-  )
-}
-
 interface ProjectImageWithSkeletonProps {
   imgSrc: string
   index: number
@@ -539,6 +421,143 @@ function SiteFooter({ onScrollToTop, showBackToTopOnDesktop = false }: SiteFoote
   )
 }
 
+const ABOUT_ME_IMAGE = 'https://res.cloudinary.com/jzcct3wg/image/upload/v1792573357/PORTFOLIO_-_NGUYEN_VAN_TUAN.webp'
+
+function IntroPanel({
+  onGoWork,
+  workCount,
+  projectsList,
+  onSelectProject,
+  onScrollToTop,
+}: {
+  onGoWork?: () => void
+  workCount?: number
+  projectsList?: Project[]
+  onSelectProject?: (project: Project) => void
+  onScrollToTop?: () => void
+}) {
+  const [videoLoaded, setVideoLoaded] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault()
+    navigator.clipboard.writeText('hello@tuans.work')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true
+      videoRef.current.play().catch(() => {})
+      if (videoRef.current.readyState >= 3) {
+        setVideoLoaded(true)
+      }
+    }
+  }, [])
+
+  return (
+    <motion.div
+      className="detail-content intro-panel"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={PAGE_EXIT_TRANSITION}
+    >
+      <div className="intro-hero">
+        <StickerPlayground>
+          <div
+            className={`intro-skeleton skeleton-shimmer ${videoLoaded ? 'is-hidden' : ''}`}
+            aria-hidden="true"
+          />
+          <video
+            ref={videoRef}
+            className={`intro-bg-video ${videoLoaded ? 'is-loaded' : ''}`}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="https://res.cloudinary.com/jzcct3wg/video/upload/so_0,f_auto,q_80,w_1200/v1788859893/Mascot_working_at_desk_1080p_202609081630.jpg"
+            onLoadedData={() => setVideoLoaded(true)}
+            onPlaying={() => setVideoLoaded(true)}
+            onCanPlay={() => setVideoLoaded(true)}
+          >
+            <source src="https://res.cloudinary.com/jzcct3wg/video/upload/v1788859893/Mascot_working_at_desk_1080p_202609081630.mp4" type="video/mp4" />
+          </video>
+        </StickerPlayground>
+
+        <div className="intro-content-inner">
+          <h1>
+            <MaskedLine delay={0} yOffset={24} duration={0.8}>Designing <span className="heading-highlight" style={{ color: '#485CE3', fontStyle: 'italic', fontFamily: "'Caveat', cursive" }}>simple</span></MaskedLine>
+            <MaskedLine delay={0.08} yOffset={24} duration={0.8}>useful experiences.</MaskedLine>
+          </h1>
+          <FadeUpReveal delay={0.2} yOffset={16} duration={0.6} className="intro-copy">
+            <p>I’m Nguyen Van Tuan, a UI/UX Designer with 5+ years of experience. I enjoy turning complex ideas into simple, useful digital experiences.</p>
+          </FadeUpReveal>
+          <FadeUpReveal delay={0.28} yOffset={16} duration={0.6} className="contact-block">
+            <span className="contact-supporting-text">If you'd like to say hi, feel free to send me a note at:</span>
+            <div className="contact-email-group">
+              <a href="mailto:hello@tuans.work" className="contact-email">hello@tuans.work</a>
+              <button
+                className={`copy-email-btn ${copied ? 'success' : ''}`}
+                onClick={handleCopy}
+                aria-label="Copy email address"
+              >
+                {copied ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                )}
+              </button>
+            </div>
+          </FadeUpReveal>
+          <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="desktop-resume-btn-wrap">
+            <a
+              href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="resume-btn"
+            >
+              Resume ↗
+            </a>
+          </FadeUpReveal>
+          {onGoWork && (
+            <div className="mobile-projects-section">
+              <FadeUpReveal delay={0.36} yOffset={16} duration={0.6}>
+                <h2 className="mobile-projects-heading">Selected Work</h2>
+              </FadeUpReveal>
+              {(projectsList ?? projects).filter(p => !p.hidden).slice(0, 3).map((project, idx) => (
+                <ScrollReveal key={project.id} delay={0.1} yOffset={16}>
+                  <MobileProjectCard
+                    project={project}
+                    index={idx}
+                    onSelect={() => onSelectProject?.(project)}
+                  />
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="project-illustration intro-illustration">
+        <ProjectImageWithSkeleton
+          imgSrc={ABOUT_ME_IMAGE}
+          index={0}
+          total={1}
+          projectTitle="About me"
+        />
+      </div>
+
+      <footer className="intro-bottom-footer" aria-label="Status">
+        <SiteFooter onScrollToTop={onScrollToTop} />
+      </footer>
+    </motion.div>
+  )
+}
+
 function ProjectPanel({ project, onScrollToTop }: { project: Project; onScrollToTop?: () => void }) {
   const projectImages = project.images ?? (project.image ? [project.image] : [])
 
@@ -639,6 +658,17 @@ function App() {
 
   const railRef = useRef<HTMLDivElement>(null)
   const detailRef = useRef<HTMLDivElement>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const el = detailRef.current
+    if (!el) return
+    const handleScroll = () => {
+      setIsScrolled(el.scrollTop > 50)
+    }
+    el.addEventListener('scroll', handleScroll, { passive: true })
+    return () => el.removeEventListener('scroll', handleScroll)
+  }, [selectedProject])
 
   // Scroll restoration: restore saved scroll position upon returning to work list / home
   useEffect(() => {
@@ -654,6 +684,7 @@ function App() {
   }, [selectedProject, router])
 
   const handleHome = () => {
+    setIsScrolled(false)
     router.navigate('/', {
       railScroll: railRef.current?.scrollTop,
       windowScroll: window.scrollY,
@@ -779,6 +810,7 @@ function App() {
                   workCount={visibleProjects.length}
                   projectsList={visibleProjects}
                   onSelectProject={handleSelectProject}
+                  onScrollToTop={handleScrollToTop}
                 />
               )}
             </AnimatePresence>
@@ -788,9 +820,9 @@ function App() {
             {!selectedProject && (
               <motion.footer
                 key="site-footer"
-                className="site-footer site-footer-home"
+                className={`site-footer site-footer-home ${isScrolled ? 'is-scrolled' : ''}`}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{ opacity: isScrolled ? 0 : 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >

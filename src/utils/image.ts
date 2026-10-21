@@ -73,6 +73,7 @@ export const PROJECT_IMAGE_METADATA: Record<string, ImageDimensions> = {
   'phone_Alphy.webp': { width: 2064, height: 1290, aspectRatio: '2064 / 1290' },
   'phone_PWC.webp': { width: 2064, height: 1290, aspectRatio: '2064 / 1290' },
   'phone_Alix.webp': { width: 2064, height: 1290, aspectRatio: '2064 / 1290' },
+  'PORTFOLIO_-_NGUYEN_VAN_TUAN.webp': { width: 2064, height: 3187, aspectRatio: '2064 / 3187' },
 }
 
 export function getImageDimensions(url: string): ImageDimensions | undefined {
