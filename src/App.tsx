@@ -422,6 +422,7 @@ function SiteFooter({ onScrollToTop, showBackToTopOnDesktop = false }: SiteFoote
 }
 
 const ABOUT_ME_IMAGE = 'https://res.cloudinary.com/jzcct3wg/image/upload/v1792573357/PORTFOLIO_-_NGUYEN_VAN_TUAN.webp'
+const RESUME_URL = 'https://drive.google.com/drive/folders/1mIb0JYAIBrd0awx4gr_KsFopaEbG7Veo'
 
 function IntroPanel({
   onGoWork,
@@ -515,7 +516,7 @@ function IntroPanel({
           </FadeUpReveal>
           <FadeUpReveal delay={0.36} yOffset={16} duration={0.6} className="desktop-resume-btn-wrap">
             <a
-              href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
+              href={RESUME_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="resume-btn"
@@ -752,7 +753,7 @@ function App() {
           <>
             <span className="mobile-header-brand">About me</span>
             <a
-              href="https://drive.google.com/file/d/1vNuQqXcLpxhTXmKPb1JN6oN1sbPgbf-Y/view?usp=sharing"
+              href={RESUME_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="mobile-header-resume"
