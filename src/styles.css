@@ -226,7 +226,7 @@ a { color: inherit; text-decoration: none; }
   min-height: 124px;
   margin: 0;
   padding: 14px 13px;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 22px;
   background: #f9f9f9;
   display: grid;
