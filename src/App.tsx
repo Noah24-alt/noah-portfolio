@@ -422,7 +422,7 @@ function SiteFooter({ onScrollToTop, showBackToTopOnDesktop = false }: SiteFoote
 }
 
 const ABOUT_ME_IMAGE = 'https://res.cloudinary.com/jzcct3wg/image/upload/v1792573357/PORTFOLIO_-_NGUYEN_VAN_TUAN.webp'
-const RESUME_URL = 'https://drive.google.com/drive/folders/1mIb0JYAIBrd0awx4gr_KsFopaEbG7Veo'
+const RESUME_URL = 'https://drive.google.com/file/d/1_FfxRF0d0xdtn6ZSNwx0BWu2QWXViUwf/view?usp=sharing'
 
 function IntroPanel({
   onGoWork,
@@ -552,8 +552,8 @@ function IntroPanel({
         />
       </div>
 
-      <footer className="intro-bottom-footer" aria-label="Status">
-        <SiteFooter onScrollToTop={onScrollToTop} />
+      <footer className="site-footer project-footer" aria-label="Status">
+        <SiteFooter onScrollToTop={onScrollToTop} showBackToTopOnDesktop={true} />
       </footer>
     </motion.div>
   )
